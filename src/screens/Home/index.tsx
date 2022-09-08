@@ -1,4 +1,4 @@
-import { Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 
 import { FontAwesome5 } from '@expo/vector-icons'
 
@@ -9,9 +9,24 @@ export function Home() {
 
   const participants = ['Lucas', 'Diego', 'Rodrigo', 'Dani', 'Wagner', 'Guilherme', 'Jaq', 'Mikão', 'Chris', 'Hamilton']
 
-  function handleParticipantAdd() {}
+  function handleParticipantAdd() {
+    if(participants.includes('Rodrigo')) {
+      return Alert.alert('Participante já existente', 'Já existe um participante na lista com esse nome')
+    }
+  }
 
-  function handleParticipantRemove() {}
+  function handleParticipantRemove(name: string) {
+    Alert.alert('Remover participante', `Deseja realmente remover o participante ${name}?`, [
+      {
+        text: 'Sim',
+        onPress: () => Alert.alert('Participante removido com sucesso.')
+      },
+      {
+        text: 'Não',
+        style: 'cancel'
+      }
+    ])
+  }
 
   return (
     <View style={styles.container}>
@@ -43,13 +58,13 @@ export function Home() {
       </View>
 
       <FlatList 
-        data={[]}
+        data={participants}
         keyExtractor={item => item}
         renderItem={({ item }) => (
           <Participant 
             key={item}
             name={item}
-            onRemove={handleParticipantRemove}
+            onRemove={() => handleParticipantRemove(item)}
           />
         )}
         showsVerticalScrollIndicator={false}
